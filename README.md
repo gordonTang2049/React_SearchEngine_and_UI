@@ -1,3 +1,22 @@
+## Search Engine
+
+    Hi Guys, This is a search engine version 0. I am trying to build a search engine that connects to an API,
+    it can filter by date and preview documents(extra feature wanted to provide), 
+    such as pdf and excel on the web portal.
+    it should also include did you mean, when your search keyword doesnot make sense to the API.
+    Pagination shall also be provided due to below issues.
+    Test case shall also be testing the return correct values of dateFn's functions.
+
+# issues
+    I stuck in the inter component state, when I choose and submit apply date filter,
+    it suppose to change the dateRange state in searchContext, I am still investigating the issues.
+    In addition, search input box does not prevent default behaviour, so that the search keyword 
+    would disappear you press search, I am also looking for the solution. I suspect it is 
+    due to re-render the searchBar item.
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

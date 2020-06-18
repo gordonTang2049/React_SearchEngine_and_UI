@@ -1,25 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import {SearchContext} from './component/searchContext'
+import SearchBar from './component/searchBar'
+import ResultsContent from './component/resultsContent'
+import DateFilter from './component/dateFilter'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  filterAndResultBlock: {
+    display: 'inline-flex',
+    margin: theme.spacing(1, 1, 0, 0),
+  },
+  resultblock :{
+    display: 'flex',
+    flexDirection: 'column'
+  }
+}));
+
+
 
 function App() {
+  const classes = useStyles()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+        <SearchContext>
+            <SearchBar />
+          <div className={classes.filterAndResultBlock}> 
+            <DateFilter />
+            <div> 
+            <ResultsContent  className={classes.resultblock} />
+            </div> 
+          </div> 
+        </SearchContext>
+      </>
   );
 }
 
