@@ -1,5 +1,6 @@
 import React, {
-    useContext
+    useContext,
+    useEffect
 } from 'react';
 import  { useStyles } from './styles'
 
@@ -14,6 +15,11 @@ export default function ResultContent(){
 
     const classes = useStyles();
     const searchResult = useContext(ResultContext)
+
+    useEffect(()=>{
+        console.log ('result mount')
+        return ()=>{console.log('result unmount')}
+    })
 
     return (
         <>

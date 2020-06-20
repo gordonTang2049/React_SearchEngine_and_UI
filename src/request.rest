@@ -1,0 +1,42 @@
+POST https://ds365api.search365.ai/search
+Content-Type: application/json
+
+{
+  "filterData": "",
+  "page": "2",
+  "pageSize": "10",
+  "sort": "modified",
+  "didYouMean": "topology",
+  "advancedQuery": "",
+  "profile": "all",
+  "query": "credit card"
+}
+
+###
+POST https://ds365api.search365.ai/search/all/suggested/123
+Content-Type: application/json
+
+{
+  "numSuggestedSearches": "5"
+}
+
+###
+
+GET https://ds365api.search365.ai/search/homepage/search365
+Content-Type: application/json
+
+###
+
+POST https://ds365api.search365.ai/search
+Content-Type: application/json
+
+{
+  "filterData": "( modified le 2020-06-18T00:00:00.0000000+00:00 ) and ( modified ge 2019-06-19T00:00:00.0000000+00:00 )",
+  "page": "",
+  "pageSize": "10",
+  "sort": "modified",
+  "didYouMean": "",
+  "advancedQuery": "",
+  "profile": "all",
+  "query": "credit card"
+}
