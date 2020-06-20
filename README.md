@@ -1,5 +1,14 @@
 ## Search Engine
 
+### 20.6.2020 Working Log
+
+    After a day of testing and console.log, the Lifecycle problem have solved. 
+    When the date get selected and submit it will fire the filtered search. 
+    Unfortunately, the search query have some issues. It doesnt allow me to search 
+    even I pass the whole date range string with double quote, I need to ask and understand 
+    how it works. 
+
+### 19.6.2020 Working Log
     Hi Guys, This is a search engine version 0. I am trying to build a search engine that connects to an API,
     it can filter by date and preview documents(extra feature wanted to provide), 
     such as pdf and excel on the web portal.
