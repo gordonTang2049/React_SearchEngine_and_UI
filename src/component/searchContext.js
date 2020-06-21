@@ -39,6 +39,7 @@ export const SearchContext = ({children}) =>{
 
     const [didYouMean, setDidYouMean] = useState(null);
     const didYouMeanProvider = useMemo(()=> ({dateRange, setDateRange}), [dateRange, setDateRange])
+
     
 // General search operator 
 useEffect(()=>{
@@ -119,8 +120,7 @@ useEffect(()=>{
 
     if(dateRange && searchVal){
         console.log('===========================================')
-        console.log('dateRange && searchVal are true')
-        
+        console.log('dateRange && searchVal are true')        
         console.log('===========================================')
         console.log(typeof dateRange)
         console.log(dateRange)
@@ -131,6 +131,8 @@ useEffect(()=>{
     }else if(searchVal){
         console.log('===========================================')
         console.log('searchVal is true')
+
+
         
         SearchOperator(searchVal) 
     }
