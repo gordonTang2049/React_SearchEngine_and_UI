@@ -5,6 +5,9 @@
     DidYouMean has finished, but I haven't yet style it like clickable ahref link for  
     post request to the API. I will pronbably fix it after writing test case.
 
+    - Successfully wrote my first react test case, test render SearchBar 
+
+
 ### 20.6.2020 Working Log
 
     After a day of testing and console.log, the Lifecycle problem have solved. 
