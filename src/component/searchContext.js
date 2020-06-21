@@ -4,20 +4,27 @@ import React, {
        useEffect,
        createContext
 } from 'react'
+import { makeStyles } from '@material-ui/core/styles';
 const axios = require('axios')
 
 
 export const SearchValContext = createContext(null)
 export const ResultContext = createContext(null)
 export const DateRangeContext = createContext(null)
-export const IsDateFitlerAppliedContext = createContext(null)
+export const didYouMeanContext = createContext(null)
+
 // export const isSearchContext = createContext(null)
 // I should have worked out a loading in here
 
+const useStyles = makeStyles((theme) => ({
+    loadingScreen :{
+
+    }
+  }));
 
 
 export const SearchContext = ({children}) =>{
-
+    const classes = useStyles();
     // search Value
     const [searchVal, setSearchVal] = useState(null);
     const searchValProvider = useMemo(()=> ({searchVal, setSearchVal}), [searchVal, setSearchVal]) 
@@ -30,16 +37,56 @@ export const SearchContext = ({children}) =>{
     const [dateRange, setDateRange] = useState(null);
     const dateRangeProvider = useMemo(()=> ({dateRange, setDateRange}), [dateRange, setDateRange])
 
-    const [isDateFitlerApplied, setIsDateFitlerApplied] = useState(false);
-    const isDateFitlerAppliedProvider = useMemo(()=> ({isDateFitlerApplied, setIsDateFitlerApplied}), [isDateFitlerApplied, setIsDateFitlerApplied]) 
-
+    const [didYouMean, setDidYouMean] = useState(null);
+    const didYouMeanProvider = useMemo(()=> ({dateRange, setDateRange}), [dateRange, setDateRange])
     
 // General search operator 
+useEffect(()=>{
+
     const SearchOperator = async (val) => {
 
         setIsLoading(true)
         try{
     
+            const resp = await axios.post('https://ds365api.search365.ai/search', {
+                "filterData": "",
+                "page": "",
+                "pageSize": "10",
+                "sort": "modified",
+                "didYouMean": "",
+                "advancedQuery": "",
+                "profile": "all",
+                "query": `"${val}"`
+            })  
+        
+            const dataBody = resp.data.body
+
+            console.log(dataBody)
+
+            setSearchResult(dataBody)
+            
+            
+        }catch(error){
+
+            console.log(error);
+
+        }finally{
+            setIsLoading(false)
+
+            // setSearchVal(null)
+            // setDateRange(null)
+        }
+    }
+
+
+    const SearchWithDateRangeOperator = async (val, date) => {
+
+        setIsLoading(true)
+
+        try{
+            // issues with the query 
+            // even I was putting double in the string filter but it does not work
+            // However I can't place a variable between double quote what should I do?
             const resp = await axios.post('https://ds365api.search365.ai/search', {
                 "filterData": "",
                 "page": "",
@@ -64,120 +111,44 @@ export const SearchContext = ({children}) =>{
 
         }finally{
             setIsLoading(false)
+
+            // setSearchVal(null)
+            // setDateRange(null)
         }
     }
 
-    const SearchWithDateOperator = async (val, date) => {
-
-        setIsLoading(true)
-        try{
-    
-            const resp = await axios.post('https://ds365api.search365.ai/search', {
-                "filterData": `"${date}"`,
-                "page": "",
-                "pageSize": "10",
-                "sort": "modified",
-                "didYouMean": "",
-                "advancedQuery": "",
-                "profile": "all",
-                "query": `"${val}"`
-            })  
+    if(dateRange && searchVal){
+        console.log('===========================================')
+        console.log('dateRange && searchVal are true')
         
-            const dataBody = resp.data.body
+        console.log('===========================================')
+        console.log(typeof dateRange)
+        console.log(dateRange)
+        console.log(searchVal)
+        console.log('===========================================')
+        SearchWithDateRangeOperator(searchVal, dateRange)
 
-            console.log(dataBody)
-
-            setSearchResult(dataBody)
-            
-    
-        }catch(error){
-
-            console.log(error);
-
-        }finally{
-            setIsLoading(false)
-        }
+    }else if(searchVal){
+        console.log('===========================================')
+        console.log('searchVal is true')
+        
+        SearchOperator(searchVal) 
     }
 
-
-// ========================================================================================================
-// Warning message for entering search value
-
-    useEffect(()=>{
-
-        if(isDateFitlerApplied && dateRange && searchVal){
-            console.log(`${searchVal}`)
-            console.log(`${dateRange}`)
-            console.log(`${isDateFitlerApplied}`)
-
-            SearchWithDateOperator(searchVal, dateRange)
-            setIsDateFitlerApplied(false)
-        }else if(searchVal){
-            console.log(`${searchVal}`)
-            console.log(`${dateRange}`)
-            console.log(`${isDateFitlerApplied}`)
-            SearchOperator(searchVal)
-        }
-        
-        
-
-
-
-    },[searchVal, dateRange, isDateFitlerApplied])
-
-// ===================================================================================================
-
-    // Search with date Filter
-    // useEffect(()=>{
-
-    //     const SearchWithDateFilterOperator = async (val, date) => {
-
-    //         setIsLoading(true)
-    //         try{
-        
-    //             const resp = await axios.post('https://ds365api.search365.ai/search', {
-    //                 "filterData": "",
-    //                 "page": "",
-    //                 "pageSize": "10",
-    //                 "sort": "modified",
-    //                 "didYouMean": "",
-    //                 "advancedQuery": "",
-    //                 "profile": "all",
-    //                 "query": `"${val}"`
-    //             })  
-            
-    //             const dataBody = resp.data.body
-
-    //             console.log(dataBody)
-
-    //             setSearchResult(dataBody)
-                
-        
-    //         }catch(error){
+    console.log('parent mount')
+    console.log('Parent searchVal is' + searchVal)
+    console.log('Parent dateRange is' + dateRange)
     
-    //             console.log(error);
-            
-    //         }finally{
-    //             setIsLoading(false)
-    //         }
-    //     }
 
-    //      console.log(searchVal)
-    //      console.log(dateRange)
-        
-    //     if(searchVal && isDateFitlerApplied){
-            
+    return () => {
+        console.log('parent unmount')
+        console.log('Parent searchVal is' + searchVal)
+        console.log('Parent dateRange is' + dateRange)
+    }
 
-    //         // SearchWithDateFilterOperator(searchVal, dateRange)
-            
-    //         setIsDateFitlerApplied(false)
-    //     }
+},[searchVal, dateRange]) 
+    
 
-
-    // },[searchVal, ])
-
-
-    // Loading Image
     if(isLoading){
         return <h1>Loading...</h1>
     } 
@@ -186,23 +157,27 @@ export const SearchContext = ({children}) =>{
 
     return (
         
-    <DateRangeContext.Provider
-       value={dateRangeProvider}
-    >
-        <IsDateFitlerAppliedContext.Provider
-            value={isDateFitlerAppliedProvider}
-        >
-            <SearchValContext.Provider
-                value={searchValProvider}
+            <DateRangeContext.Provider
+                value={dateRangeProvider}
             >
-                <ResultContext.Provider
-                    value={searchResult}
+                <SearchValContext.Provider
+                    value={searchValProvider}
                 >
-                    {children}
-                </ResultContext.Provider>
-            </SearchValContext.Provider>
-        </IsDateFitlerAppliedContext.Provider>
-    </DateRangeContext.Provider>
+                    <ResultContext.Provider
+                        value={searchResult}
+                    >
+                        <didYouMeanContext.Provider
+                            value={didYouMeanProvider}
+                        >
+                      <div>
+                        {children}
+                      </div>  
+                      </didYouMeanContext.Provider>                        
+                    </ResultContext.Provider>
+                </SearchValContext.Provider>   
+            </DateRangeContext.Provider>
 
     )
 }
+
+

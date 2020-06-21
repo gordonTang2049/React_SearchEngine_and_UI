@@ -1,7 +1,9 @@
 import React, {
     useState,    
     useContext,
-    useReducer
+    useReducer,
+    useEffect,
+    useRef
 } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,10 +15,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 
-import {
-  DateRangeContext,
-  IsDateFitlerAppliedContext
-} from './searchContext'
+import {DateRangeContext} from './searchContext'
 
 import {
   todayDate,
@@ -43,38 +42,38 @@ function dateFilterReducer(state, action){
   switch(action.type){
     case "all":
         return{
-          dateRange : "",
-          isDateFilterSubmitted : true
+          dateRange : ""
+          
         }
     case "ThisYear":
         return{
-          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneYearAgoDate()}T00:00:00.0000000+00:00 )`,
-          isDateFilterSubmitted : true
+          dateRange : `"( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneYearAgoDate()}T00:00:00.0000000+00:00 )"`
+          
         }
     case "90":
         return{
-          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${threeMonthsAgoDate()}T00:00:00.0000000+00:00 )`,
-          isDateFilterSubmitted : true
+          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${threeMonthsAgoDate()}T00:00:00.0000000+00:00 )`
+          
         }
     case "60":
         return{
           dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${twoMonthsAgoDate()}T00:00:00.0000000+00:00 )`,
-          isDateFilterSubmitted : true
+          
         }
     case "30":
         return{
-          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneMonthAgoDate()}T00:00:00.0000000+00:00 )`,
-          isDateFilterSubmitted : true
+          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneMonthAgoDate()}T00:00:00.0000000+00:00 )`
+          
         }
     case "7":
         return{
           dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneWeekAgoDate()}T00:00:00.0000000+00:00 )`,
-          isDateFilterSubmitted : true
+          
         }
     case "1":
         return{
-          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneDayAgoDate()}T00:00:00.0000000+00:00 )`,
-          isDateFilterSubmitted : true
+          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneDayAgoDate()}T00:00:00.0000000+00:00 )`
+          
         }
     default:
         return state
@@ -86,47 +85,78 @@ function dateFilterReducer(state, action){
 export default function DateFilter() {
 
   const {setDateRange} = useContext(DateRangeContext)
-  const {setIsDateFitlerApplied} = useContext(IsDateFitlerAppliedContext)
+  
 
-  const [{dateRange, isDateFilterSubmitted}, dispatch] = useReducer(dateFilterReducer, {
-    dateRange : "",
-    isDateFilterSubmitted : false
+  const [{dateRange}, dispatch] = useReducer(dateFilterReducer, {
+    dateRange : ""
+    
   })
 
   
   const classes = useStyles();
 
   const [selectedVal, setSelectedVal] = useState('');
-  
+   
+  const radioButtonRef = useRef(null)
   // const [error, setError] = useState(false);
-  // const [helperText, setHelperText] = useState('Choose wisely');
-
+  // const [helperText, setHelperText] = useState('Choose wisely');   'radio Button Ref ' + 
 
   const handleRadioChange = (event) => {
-    
-    const val = event.target.value
-    setSelectedVal(val)
 
-    return () => {
+      const val = event.target.value
+      setSelectedVal(val)
+      
 
-      dispatch({type : selectedVal})
-    }
-    
+      
+      console.log('date filter handleRadioChange ' + dateRange)
+      console.log(`handleRadio Change NONreturn dateRange ${dateRange} `)
+      
+
+
+      
+
   };
-
-
-
+  
   const handleSubmit = (event) => {
     
     event.preventDefault();
 
-    console.log(dateRange)
+    console.log('Submit dateRange' + dateRange)
 
     setDateRange(dateRange)
-    setIsDateFitlerApplied(isDateFilterSubmitted)
+    
       
     
   };
+
+  // either  selected Value or SetSelected Val
+  useEffect(()=>{
+    console.log('==============================================================')
+    console.log('date filter mount')
+    // console.log('date filter mount dateRange ' + dateRange)
+    // console.log('date filter mount dateRange' + isDateFilterSubmitted)
+    
+    dispatch({type : selectedVal})
+    
+
+    console.log('After Dispatch date filter mount')
+    // console.log('After Dispatch date filter mount dateRange ' + dateRange)
+    // console.log('After Dispatch date filter mount dateRange' + isDateFilterSubmitted)
+
+    // console.log('DateFilter selected value mount' + selectedVal)
+
+    
+    return ()=>{
+      console.log('date filter unmounted')
+      // console.log('date filter unmount' + dateRange)
+      // console.log('date filter unmount' + isDateFilterSubmitted)
+
+      // console.log('After Dispatch date filter unmounted')
+      // console.log('After Dispatch date filter unmount' + dateRange)
+      // console.log('After Dispatch date filter unmount' + isDateFilterSubmitted)
+    }
+      
+  },[selectedVal])
 
 // what is component="legend"
 // Add search count next to LAST MODIFIED DATE
@@ -137,7 +167,7 @@ export default function DateFilter() {
 
         <FormLabel component="legend">LAST MODIFIED DATE </FormLabel>
 
-        <RadioGroup aria-label="dateFilter" name="dateFilter"  value={selectedVal} onChange={handleRadioChange}>
+        <RadioGroup ref={radioButtonRef} aria-label="dateFilter" name="dateFilter"  value={selectedVal} onChange={handleRadioChange}>
             
           <FormControlLabel value="all" control={<Radio />} label="All" />
           <FormControlLabel value="ThisYear" control={<Radio />} label="This Year" />

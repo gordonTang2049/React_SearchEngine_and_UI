@@ -4,6 +4,8 @@ import {SearchContext} from './component/searchContext'
 import SearchBar from './component/searchBar'
 import ResultsContent from './component/resultsContent'
 import DateFilter from './component/dateFilter'
+import DidYouMean from './component/didYouMean'
+
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column'
   }
+  
 }));
 
 
@@ -24,7 +27,10 @@ function App() {
   return (
       <>
         <SearchContext>
+         
             <SearchBar />
+            <DidYouMean />
+          
           <div className={classes.filterAndResultBlock}> 
             <DateFilter />
             <div> 
