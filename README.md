@@ -2,7 +2,15 @@
 
 ### 23.6.2020 
 
+    Need to build 
+        1. link to didyoumean 
+
+        2. loading display(CSS not rerender)
+
+        3. custom hook
+
      try to build a custom hook for search, to arrange the code be cleaner and easiler to follow
+     but fail......  , need to ask why  XD
 
      potential bug: 
 
@@ -57,7 +65,7 @@
     Pagination shall also be provided due to below issues.
     Test case shall also be testing the return correct values of dateFn's functions.
 
-# issues
+# issues (Solved on the weekend)
     I stuck in the inter component state, when I choose and submit apply date filter,
     it suppose to change the dateRange state in searchContext, I am still investigating the issues.
     In addition, search input box does not prevent default behaviour, so that the search keyword 

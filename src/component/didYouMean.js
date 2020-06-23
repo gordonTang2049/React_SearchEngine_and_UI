@@ -15,13 +15,6 @@ export default function DidYouMean(){
 
     const classes = useStyles();
     const searchResult = useContext(ResultContext)
-
-    useEffect(()=>{
-        console.log('result mount')
-        
-        return ()=>{console.log('result unmount')}
-    })
-    
     
     return (
         <>

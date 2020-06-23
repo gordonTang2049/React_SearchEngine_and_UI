@@ -2,16 +2,19 @@ import React, {
        useMemo,
        useState,
        useEffect,
-       createContext
+       createContext,
+       useRef
 } from 'react'
+import {useSearch} from '../hooksAndFn/useSearch'
 import { makeStyles } from '@material-ui/core/styles';
+
 const axios = require('axios')
 
 
 export const SearchValContext = createContext(null)
 export const ResultContext = createContext(null)
 export const DateRangeContext = createContext(null)
-export const didYouMeanContext = createContext(null)
+
 
 // export const isSearchContext = createContext(null)
 // I should have worked out a loading in here
@@ -29,19 +32,37 @@ export const SearchContext = ({children}) =>{
     const [searchVal, setSearchVal] = useState(null);
     const searchValProvider = useMemo(()=> ({searchVal, setSearchVal}), [searchVal, setSearchVal]) 
 
-
+//=========Search Result================================= 
     const [searchResult, setSearchResult] = useState(null);
+//=========Search Result=================================
      
     const [isLoading, setIsLoading] = useState(false)
 
     const [dateRange, setDateRange] = useState(null);
     const dateRangeProvider = useMemo(()=> ({dateRange, setDateRange}), [dateRange, setDateRange])
 
-    const [didYouMean, setDidYouMean] = useState(null);
-    const didYouMeanProvider = useMemo(()=> ({dateRange, setDateRange}), [dateRange, setDateRange])
+// ===================================================
+    // const {searchResult, loading} = useSearch(searchVal, {searchResult : null, loading : true})
+    // console.log(searchResult)   
+    // const searchResultRef = useRef(searchResult)
+// ======================================================
+    // useEffect(()=>{
+    //     console.log('=================')
+    //     console.log('parent mounted '+searchResult )
+    //     console.log('=================')
+    //     return ()=>{
+    //         console.log('=================')
+    //         console.log('parent unmounted '+searchResult )
+    //         console.log('=================')
+    //     }
+    // })
 
     
+
+
+
 // General search operator 
+// =================================================================================================47 - 135
 useEffect(()=>{
 
     const SearchOperator = async (val) => {
@@ -85,6 +106,7 @@ useEffect(()=>{
         setIsLoading(true)
 
         try{
+            console.log(date)
             // issues with the query 
             // even I was putting double in the string filter but it does not work
             // However I can't place a variable between double quote what should I do?
@@ -119,43 +141,22 @@ useEffect(()=>{
     }
 
     if(dateRange && searchVal){
-        console.log('===========================================')
-        console.log('dateRange && searchVal are true')        
-        console.log('===========================================')
-        console.log(typeof dateRange)
-        console.log(dateRange)
-        console.log(searchVal)
-        console.log('===========================================')
+
         SearchWithDateRangeOperator(searchVal, dateRange)
 
     }else if(searchVal){
-        console.log('===========================================')
-        console.log('searchVal is true')
-
-
         
         SearchOperator(searchVal) 
     }
 
-    console.log('parent mount')
-    console.log('Parent searchVal is' + searchVal)
-    console.log('Parent dateRange is' + dateRange)
-    
-
-    return () => {
-        console.log('parent unmount')
-        console.log('Parent searchVal is' + searchVal)
-        console.log('Parent dateRange is' + dateRange)
-    }
-
 },[searchVal, dateRange]) 
+// ========================================================================================================
     
 
     if(isLoading){
         return <h1>Loading...</h1>
     } 
 
-// ========================================================================================================
 
     return (
         
@@ -166,15 +167,16 @@ useEffect(()=>{
                     value={searchValProvider}
                 >
                     <ResultContext.Provider
+                        
                         value={searchResult}
                     >
-                        <didYouMeanContext.Provider
-                            value={didYouMeanProvider}
-                        >
+
+                       
                       <div>
                         {children}
                       </div>  
-                      </didYouMeanContext.Provider>                        
+                      
+
                     </ResultContext.Provider>
                 </SearchValContext.Provider>   
             </DateRangeContext.Provider>

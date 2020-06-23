@@ -25,7 +25,7 @@ import {
   oneMonthAgoDate,
   oneWeekAgoDate,
   oneDayAgoDate
-} from './dateFn' 
+} from '../hooksAndFn/dateFn' 
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -47,7 +47,7 @@ function dateFilterReducer(state, action){
         }
     case "ThisYear":
         return{
-          dateRange : `"( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneYearAgoDate()}T00:00:00.0000000+00:00 )"`
+          dateRange : `( modified le ${todayDate()}T00:00:00.0000000+00:00 ) and ( modified ge ${oneYearAgoDate()}T00:00:00.0000000+00:00 )`
           
         }
     case "90":
@@ -98,30 +98,18 @@ export default function DateFilter() {
   const [selectedVal, setSelectedVal] = useState('');
    
   const radioButtonRef = useRef(null)
-  // const [error, setError] = useState(false);
-  // const [helperText, setHelperText] = useState('Choose wisely');   'radio Button Ref ' + 
+  
 
   const handleRadioChange = (event) => {
 
       const val = event.target.value
       setSelectedVal(val)
-      
-
-      
-      console.log('date filter handleRadioChange ' + dateRange)
-      console.log(`handleRadio Change NONreturn dateRange ${dateRange} `)
-      
-
-
-      
 
   };
   
   const handleSubmit = (event) => {
     
     event.preventDefault();
-
-    console.log('Submit dateRange' + dateRange)
 
     setDateRange(dateRange)
     
@@ -131,31 +119,9 @@ export default function DateFilter() {
 
   // either  selected Value or SetSelected Val
   useEffect(()=>{
-    console.log('==============================================================')
-    console.log('date filter mount')
-    // console.log('date filter mount dateRange ' + dateRange)
-    // console.log('date filter mount dateRange' + isDateFilterSubmitted)
     
     dispatch({type : selectedVal})
     
-
-    console.log('After Dispatch date filter mount')
-    // console.log('After Dispatch date filter mount dateRange ' + dateRange)
-    // console.log('After Dispatch date filter mount dateRange' + isDateFilterSubmitted)
-
-    // console.log('DateFilter selected value mount' + selectedVal)
-
-    
-    return ()=>{
-      console.log('date filter unmounted')
-      // console.log('date filter unmount' + dateRange)
-      // console.log('date filter unmount' + isDateFilterSubmitted)
-
-      // console.log('After Dispatch date filter unmounted')
-      // console.log('After Dispatch date filter unmount' + dateRange)
-      // console.log('After Dispatch date filter unmount' + isDateFilterSubmitted)
-    }
-      
   },[selectedVal])
 
 // what is component="legend"
@@ -195,18 +161,3 @@ export default function DateFilter() {
   );
 }
 
-
- // if (value === 'best') {
-    //   setHelperText('You got it!');
-    //   setError(false);
-    // } else if (value === 'worst') {
-
-    //   setHelperText('Sorry, wrong answer!');
-    //   setError(true);
-
-    // } else {
-
-    //   setHelperText('Please select an option.');
-    //   setError(true);
-
-    // }
