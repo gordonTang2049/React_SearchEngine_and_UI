@@ -1,5 +1,38 @@
 ## Search Engine
 
+### 23.6.2020 
+
+     try to build a custom hook for search, to arrange the code be cleaner and easiler to follow
+
+     potential bug: 
+
+        1. After the entering the search value, at the same time, 
+           not click the search button, but choose date and apply date filter instead,
+           it may cause issues.
+           
+        2. After searching the one word(enter the value and finish to click the search button), 
+           immediately, enter another word, but choose date and apply date filter instead. 
+     
+        3. After the search, search value would disappear on the input box
+            => I knew what cause the issues, it is caused by render of loading component, 
+               and rerender parent component, 
+               to solve it, I would use CSS to cover the whole page with index 
+            but I want to finish my custom hook finish
+
+        4. When the same word being type in the search input box, rather have no visual effect,
+           after pressing search button, it should have the loading effect, 
+           even it won't fetch the same infor again.
+
+     extra things wanna build:
+
+        1. I believe our user would mainly corporate or government client,
+           they would like to search for previous cases/project pdf/excel infor, 
+           as reference of their current cases/project. 
+           I would like to build a preview panel for those pdf/excel, 
+           it allows us to preview before downloading the documents.
+
+            
+
 ### 21.6.2020 Working Log
 
     DidYouMean has finished, but I haven't yet style it like clickable ahref link for  
@@ -30,7 +63,6 @@
     In addition, search input box does not prevent default behaviour, so that the search keyword 
     would disappear you press search, I am also looking for the solution. I suspect it is 
     due to re-render the searchBar item.
-
 
 
 
