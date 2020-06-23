@@ -29,9 +29,9 @@ function SearchBar() {
     const classes = useStyles();
 
     const [inputValue, setInputValue] = useState('')
-    const { setSearchVal} = useContext(SearchValContext)
-    
 
+    const {setSearchVal} = useContext(SearchValContext)
+    
     const handleChange = (e) => {
 
         const value = e.target.value

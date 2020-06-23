@@ -2,12 +2,17 @@
 
 ### 23.6.2020 
 
+     loading display(solved)
+
+        loading screen toggle is built, it is solving problem of rerender the loading component, 
+        which would clean the search value even I have event preventDefault.
+
     Need to build 
         1. link to didyoumean 
 
-        2. loading display(CSS not rerender)
-
         3. custom hook
+
+        4. try to code style in seperate sheet and import
 
      try to build a custom hook for search, to arrange the code be cleaner and easiler to follow
      but fail......  , need to ask why  XD

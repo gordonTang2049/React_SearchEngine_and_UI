@@ -5,6 +5,7 @@ import React, {
        createContext,
        useRef
 } from 'react'
+import Paper from '@material-ui/core/Paper';
 import {useSearch} from '../hooksAndFn/useSearch'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -64,6 +65,7 @@ export const SearchContext = ({children}) =>{
 // General search operator 
 // =================================================================================================47 - 135
 useEffect(()=>{
+    console.log(isLoading)
 
     const SearchOperator = async (val) => {
 
@@ -151,11 +153,11 @@ useEffect(()=>{
 
 },[searchVal, dateRange]) 
 // ========================================================================================================
-    
 
-    if(isLoading){
-        return <h1>Loading...</h1>
-    } 
+
+    // if(isLoading){
+    //     return <h1>Loading...</h1>
+    // } 
 
 
     return (
@@ -170,13 +172,48 @@ useEffect(()=>{
                         
                         value={searchResult}
                     >
-
-                       
-                      <div>
+                      <div >
                         {children}
                       </div>  
-                      
+                       
+                      <Paper  elevation={9} square={false}  style={ isLoading ? {
+                        position:'absolute',
+                        width: '100%',
+                        height: '100%',
+                        background: '#1a1a24',
+                        top:'0',
+                        left:'0',
+                        bottom:'0',
+                        right:'0',
+                        zIndex: '10000000',
+                        
 
+                        } : {
+
+                        display:'none'
+
+                        }}> 
+                        
+                            <div style={{
+                                width: '100%',
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                flexDirection: 'column',
+                                justifyContent: 'spaceAround',
+                                alignItems: 'center'
+                            }}>
+                                    
+                                    <img src="https://media.giphy.com/media/11ASZtb7vdJagM/giphy.gif" style={{
+                                                height: "150px",
+                                                width: "10rem"
+                                    }}/>
+                                    
+                                    <img src="https://media.giphy.com/media/26xBsIMM0dcRKbXQk/giphy.gif" style={{
+                                        
+                                    }}/>
+
+                            </div>
+                       </Paper> 
                     </ResultContext.Provider>
                 </SearchValContext.Provider>   
             </DateRangeContext.Provider>
